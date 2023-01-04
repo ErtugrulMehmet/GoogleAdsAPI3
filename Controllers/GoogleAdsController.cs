@@ -26,14 +26,21 @@ namespace GoogleAdsAPI.Controllers
 
             return Ok();
         }
-        [HttpPost("{customerId}")]
-        public IActionResult GetSummurizeCampaign(long customerId)
+        [HttpPost("GetSummurize")]
+        public IActionResult GetSummurizeCampaign(long customerId) 
         {
 
-            _googleAdsService.GetSummurizeCampaign(customerId);
+            var result = _googleAdsService.GetSummurizeCampaign(customerId);
 
-            return Ok();
+            return Ok(result);
         }
-       
+        [HttpGet]
+        public IActionResult ListAccessibleAccounts()
+        {
+
+           var result=  _googleAdsService.ListAccessibleAccounts();
+
+            return Ok(result);
+        }
     }
 }

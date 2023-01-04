@@ -36,12 +36,12 @@ namespace GoogleAdsAPI.ServicesAPI
                 Services.V12.GoogleAdsService);
 
             string query = @"SELECT campaign.id,campaign.name FROM campaign";
-
+            
 
             googleAdsService.SearchStream(customerId.ToString(), query,
                     delegate (SearchGoogleAdsStreamResponse resp)
                     {
-
+                        
                         var json = SimpleWrite(resp, fileName);
                     });
         }
@@ -56,7 +56,7 @@ namespace GoogleAdsAPI.ServicesAPI
             return fileName;
         }
 
-        public void GetSummurizeCampaign(long customerId)
+        public List<string> GetSummurizeCampaign(long customerId)
         {
             var section = _configuration.GetSection("GoogleAds");
             GoogleAdsConfig config = new GoogleAdsConfig(section);
@@ -80,12 +80,33 @@ namespace GoogleAdsAPI.ServicesAPI
                       campaign.network_settings.target_partner_search_network
                     FROM
                       campaign";
+            List<string> rows = new List<string>();
             googleAdsService.SearchStream(customerId.ToString(), query,
                    delegate (SearchGoogleAdsStreamResponse resp)
                    {
+                       
+                       foreach (GoogleAdsRow row in resp.Results)
+                       {
+                           string rowString = @"Campaign with ID " +
+                                           $"{row.Campaign.Id}, name " +
+                                           $"'{row.Campaign.Name}', status " +
+                                           $"'{row.Campaign.Status}', advertising channel type " +
+                                           $"'{row.Campaign.AdvertisingChannelType}', advertising channel subtype " +
+                                           $"'{row.Campaign.AdvertisingChannelSubType}', start date " +
+                                           $"'{row.Campaign.StartDate}', end date " +
+                                           $"'{row.Campaign.EndDate}', serving status " +
+                                           $"'{row.Campaign.ServingStatus}', target Google search " +
+                                           $"'{row.Campaign.NetworkSettings.TargetGoogleSearch}', target search network " +
+                                           $"'{row.Campaign.NetworkSettings.TargetSearchNetwork}', target content network " +
+                                           $"'{row.Campaign.NetworkSettings.TargetContentNetwork}', target partner search network " +
+                                           $"'{row.Campaign.NetworkSettings.TargetPartnerSearchNetwork}'.";
+                           rows.Add(rowString);
+                       }
 
-                       var json = SimpleWrite(resp, fileName);
+                       
+                       //var json = SimpleWrite(resp, fileName);
                    });
+            return rows;
             //SearchGoogleAdsResponse response = googleAdsService.Search(customerId.ToString(), query);
 
             //using (StreamWriter file = File.CreateText("file.json"))
@@ -109,7 +130,7 @@ namespace GoogleAdsAPI.ServicesAPI
 
             string query = @"SELECT customer.id, customer.descriptive_name, " +
                 "customer.currency_code, customer.time_zone, customer.tracking_url_template, " +
-                "customer.auto_tagging_enabled FROM customer LIMIT 1";
+                "customer.auto_tagging_enabled FROM customer";
 
             SearchGoogleAdsRequest request = new SearchGoogleAdsRequest()
             {
@@ -117,7 +138,9 @@ namespace GoogleAdsAPI.ServicesAPI
                 Query = query
             };
 
-            //CustomerModel customer = googleAdsService.Search(request).First().Customer;
+            
+            //SearchGoogleAdsFieldsResponse response = googleAdsService.Search(request.CustomerId);
+            //return response.Results;
 
             //var json = JsonConvert.SerializeObject(customer);
             //return json;
@@ -149,6 +172,44 @@ namespace GoogleAdsAPI.ServicesAPI
 
 
         }
+
+
+        public string[] ListAccessibleAccounts()
+        {
+            
+            var section = _configuration.GetSection("GoogleAds");
+            GoogleAdsConfig config = new GoogleAdsConfig(section);
+            GoogleAdsClient client = new GoogleAdsClient(config);
+            CustomerServiceClient customerService = client.GetService(Services.V12.CustomerService);
+
+            List<string> customers = new List<string>();
+            try
+            {
+               
+                // Retrieve the list of customer resources.
+                string[] customerResourceNames = customerService.ListAccessibleCustomers();
+
+                // Display the result.
+                foreach (string customerResourceName in customerResourceNames)
+                {
+                    Console.WriteLine(
+                        $"Found customer with resource name = '{customerResourceName}'.");
+                    customers.Add(customerResourceName);
+                    
+                }
+                return customerResourceNames;
+            }
+            catch (GoogleAdsException e)
+            {
+                Console.WriteLine("Failure:");
+                Console.WriteLine($"Message: {e.Message}");
+                Console.WriteLine($"Failure: {e.Failure}");
+                Console.WriteLine($"Request ID: {e.RequestId}");
+                throw;
+            }
+        }
+
+       
     }
 }
 
