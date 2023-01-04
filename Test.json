@@ -1,0 +1,64 @@
+{
+  "Results": [
+    {
+      "Campaign": {
+        "ResourceName": "customers/9454998591/campaigns/19413213811",
+        "Id": 19413213811,
+        "HasId": true,
+        "Name": "Redmill Solutions Test",
+        "HasName": true,
+        "PrimaryStatus": 0,
+        "PrimaryStatusReasons": [
+        ],
+        "Status": 0,
+        "ServingStatus": 0,
+        "BiddingStrategySystemStatus": 0,
+        "AdServingOptimizationStatus": 0,
+        "AdvertisingChannelType": 0,
+        "AdvertisingChannelSubType": 0,
+        "TrackingUrlTemplate": "",
+        "HasTrackingUrlTemplate": false,
+        "UrlCustomParameters": [
+        ],
+        "Labels": [
+        ],
+        "ExperimentType": 0,
+        "BaseCampaign": "",
+        "HasBaseCampaign": false,
+        "CampaignBudget": "",
+        "HasCampaignBudget": false,
+        "BiddingStrategyType": 0,
+        "AccessibleBiddingStrategy": "",
+        "StartDate": "",
+        "HasStartDate": false,
+        "CampaignGroup": "",
+        "HasCampaignGroup": false,
+        "EndDate": "",
+        "HasEndDate": false,
+        "FinalUrlSuffix": "",
+        "HasFinalUrlSuffix": false,
+        "FrequencyCaps": [
+        ],
+        "VideoBrandSafetySuitability": 0,
+        "PaymentMode": 0,
+        "OptimizationScore": 0.0,
+        "HasOptimizationScore": false,
+        "ExcludedParentAssetFieldTypes": [
+        ],
+        "ExcludedParentAssetSetTypes": [
+        ],
+        "UrlExpansionOptOut": false,
+        "HasUrlExpansionOptOut": false,
+        "BiddingStrategy": "",
+        "CampaignBiddingStrategyCase": 0
+      }
+    }
+  ],
+  "FieldMask": {
+    "Paths": [
+      "campaign.id",
+      "campaign.name"
+    ]
+  },
+  "RequestId": "kXndceWQd7Bo3hLDxjJw7g"
+}
